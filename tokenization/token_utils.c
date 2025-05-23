@@ -6,7 +6,7 @@
 /*   By: aguilleu <aguilleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:43:23 by acolonne          #+#    #+#             */
-/*   Updated: 2025/05/23 13:37:19 by aguilleu         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:49:39 by aguilleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,33 +47,6 @@ void	increment_prompt(t_prompt **prompt, int k, int j)
 	{
 		(*prompt) = (*prompt)->next;
 		k++;
-	}
-}
-
-void	add_cmd(t_prompt *prompt, t_cmd **cmd, int *i, t_minishell *minishell)
-{
-	t_cmd	*tmp;
-	int		j;
-	int		l;
-	int		k;
-
-	j = *i;
-	l = j;
-	k = 0;
-	tmp = *cmd;
-	while (prompt && prompt->token != PIPE)
-	{
-		if (is_empty(prompt))
-			*i += 1;
-		else if (prompt->token != NORMAL && prompt->token != PIPE)
-			cmd_operand(prompt, cmd, i, minishell);
-		else if (prompt->token == NORMAL)
-		{
-			tmp->cmd_name = ft_strdup(prompt->text);
-			tmp->arg = cmd_normal(prompt, cmd, i, minishell);
-		}
-		j = *i - l;
-		increment_prompt(&prompt, k, j);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acolonne <acolonne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguilleu <aguilleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 14:38:27 by acolonne          #+#    #+#             */
-/*   Updated: 2025/05/23 18:15:58 by acolonne         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:53:34 by aguilleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,27 +62,55 @@ char	**cmd_normal(t_prompt *prompt, t_cmd **cmd,
 	return (arg);
 }
 
-t_cmd	*create_command_sub(t_minishell *minishell, t_prompt *prompt,
-		t_cmd *cmd, t_cmd *tmp)
+void	add_cmd(t_prompt *prompt, t_cmd **cmd, int *i, t_minishell *minishell)
 {
-	int	i;
-	int	j;
+	t_cmd	*tmp;
+	int		j;
+	int		l;
+	int		k;
 
+	j = *i;
+	l = j;
+	k = 0;
+	tmp = *cmd;
+	while (prompt && prompt->token != PIPE)
+	{
+		if (prompt->token != NORMAL && prompt->token != PIPE)
+			cmd_operand(prompt, cmd, i, minishell);
+		if (prompt->token == NORMAL)
+		{
+			tmp->cmd_name = ft_strdup(prompt->text);
+			tmp->arg = cmd_normal(prompt, cmd, i, minishell);
+		}
+		j = *i - l;
+		while (prompt && k < j)
+		{
+			prompt = prompt->next;
+			k++;
+		}
+	}
+}
+
+t_cmd	*create_cmd(t_prompt *prompt, t_minishell *minishell)
+{
+	t_cmd	*cmd;
+	t_cmd	*tmp;
+	int		i;
+
+	cmd = create_cmd_node();
+	if (!cmd)
+		return (0);
+	tmp = cmd;
 	i = 0;
-	j = 0;
 	while (prompt)
 	{
 		if (i != 0)
 		{
-			tmp = create_cmd_node();
+			tmp = handle_new_cmd_node(&cmd);
 			if (!tmp)
-			{
-				free_all_cmd(&cmd);
 				return (0);
-			}
 		}
-		add_cmd(prompt, &tmp, &i, minishell);
-		increment_cmd(&prompt, &i, &j);
+		process_cmd_loop(&prompt, &tmp, &i, minishell);
 		if (cmd != tmp)
 			ft_cmdadd_back(&cmd, tmp);
 		if (prompt && prompt->token == PIPE)
@@ -91,40 +119,15 @@ t_cmd	*create_command_sub(t_minishell *minishell, t_prompt *prompt,
 	return (cmd);
 }
 
-t_cmd	*create_cmd(t_prompt *prompt, t_minishell *minishell)
-{
-	t_cmd	*cmd;
-	t_cmd	*tmp;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	cmd = create_cmd_node();
-	if (!cmd)
-		return (0);
-	tmp = cmd;
-	cmd = create_command_sub(minishell, prompt, cmd, tmp);
-	return (cmd);
-}
-
 int	analyse_prompt(t_minishell *minishell)
 {
-	if (check_operand_error(minishell->prompt) == 1)
+	if (check_operand_error(minishell->prompt, minishell) == 1)
 	{
 		free_all_prompt(&minishell->prompt);
 		return (1);
 	}
 	check_expand(minishell);
 	minishell->cmd = create_cmd(minishell->prompt, minishell);
-	t_cmd *tmp;
-
-	tmp = minishell->cmd;
-	while (tmp)
-	{
-		printf("%s\n", tmp->cmd_name);
-		tmp = tmp->next;
-	}
 	if (!minishell->cmd)
 	{
 		free_all_prompt(&minishell->prompt);

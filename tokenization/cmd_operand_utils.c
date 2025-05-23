@@ -6,7 +6,7 @@
 /*   By: aguilleu <aguilleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:45:25 by aguilleu          #+#    #+#             */
-/*   Updated: 2025/05/23 15:05:02 by aguilleu         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:01:54 by aguilleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	check_expand(t_minishell *minishell)
 	}
 }
 
-int	check_operand_error(t_prompt *prompt)
+int	check_operand_error(t_prompt *prompt, t_minishell *minishell)
 {
 	t_prompt	*tmp;
 
@@ -92,6 +92,7 @@ int	check_operand_error(t_prompt *prompt)
 				|| (tmp->next->token != NORMAL)))
 		{
 			print_error("bash: syntax error near unexpected token\n");
+			minishell->exit_code = 2;
 			return (1);
 		}
 		if (tmp->token == PIPE && ((!tmp->next
@@ -99,6 +100,7 @@ int	check_operand_error(t_prompt *prompt)
 						|| !tmp->prev))))
 		{
 			print_error("bash: syntax error near unexpected token\n");
+			minishell->exit_code = 2;
 			return (1);
 		}
 		tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: aguilleu <aguilleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:43:53 by aguilleu          #+#    #+#             */
-/*   Updated: 2025/05/23 13:48:18 by aguilleu         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:58:54 by aguilleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ void	input(t_cmd *tmp, t_prompt *prompt, t_minishell *minishell)
 		if (tmp->infile_fd < 0)
 		{
 			perror("infile");
+			minishell->exit_code = 1;
 			prompt->is_error = 1;
 		}
 	}
 }
 
-void	output(t_cmd *tmp, t_prompt *prompt)
+void	output(t_cmd *tmp, t_prompt *prompt, t_minishell *minishell)
 {
 	if (tmp->outfile == 1)
 	{
@@ -68,6 +69,7 @@ void	output(t_cmd *tmp, t_prompt *prompt)
 	if (tmp->outfile_fd < 0)
 	{
 		perror("outfile");
+		minishell->exit_code = 1;
 		prompt->is_error = 1;
 	}
 }
@@ -81,7 +83,7 @@ void	cmd_operand(t_prompt *prompt, t_cmd **cmd,
 	if (prompt->token == INPUT || prompt->token == HEREDOC)
 		input(tmp, prompt, minishell);
 	else if (prompt->token == OUTPUT || prompt->token == APPEND)
-		output(tmp, prompt);
+		output(tmp, prompt, minishell);
 	if (prompt->is_error == 1)
 		go_to_next_cmd(prompt, i);
 	else

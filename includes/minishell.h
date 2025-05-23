@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acolonne <acolonne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguilleu <aguilleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:32:33 by acolonne          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:38 by acolonne         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:53:03 by aguilleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ size_t		ft_strlcat(char *dst, const char *src, size_t size);
 
 t_cmd		*create_cmd_node(void);
 
-void		add_cmd(t_prompt *prompt, t_cmd **cmd,
-				int *i, t_minishell *minishell);
+// void		add_cmd(t_prompt *prompt, t_cmd **cmd,
+// 				int *i, t_minishell *minishell);
 
 void		ft_cmdadd_back(t_cmd **lst, t_cmd *new);
 
@@ -223,7 +223,7 @@ int			count_line(t_prompt *tmp);
 
 void		increment_cmd(t_prompt **prompt, int *i, int *j);
 
-int			check_operand_error(t_prompt *prompt);
+int			check_operand_error(t_prompt *prompt, t_minishell *minishell);
 
 void		check_expand(t_minishell *minishell);
 
@@ -254,5 +254,19 @@ void		remove_quotes_from_prompt(t_prompt *prompt);
 void		handle_double_quotes(t_minishell *minishell, char **text, int *i);
 
 int			check_heredoc_quotes(char *text);
+
+void		shlvl_increment(t_minishell *minishell);
+
+void		update_env_variable(char *var, char *value, char ***env);
+
+void		check_heredoc_expand(char *text, int *i);
+
+void		process_cmd_loop(t_prompt **prompt, t_cmd **tmp,
+				int *i, t_minishell *ms);
+
+t_cmd		*handle_new_cmd_node(t_cmd **cmd);
+
+void		add_cmd(t_prompt *prompt, t_cmd **cmd,
+				int *i, t_minishell *minishell);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aguilleu <aguilleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 18:40:22 by acolonne          #+#    #+#             */
-/*   Updated: 2025/05/20 15:11:23 by aguilleu         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:41:02 by aguilleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,20 @@ void	print_error(char *s)
 		write(2, &s[i], 1);
 		i++;
 	}
+}
+
+void	shlvl_increment(t_minishell *minishell)
+{
+	int		i;
+	char	*new;
+	char	*shlvl;
+
+	i = 0;
+	shlvl = ft_getenv(minishell->env, "SHLVL");
+	if (!shlvl)
+		return ;
+	i = ft_atoll(shlvl) + 1;
+	new = ft_itoa(i);
+	update_env_variable("SHLVL", new, &minishell->env);
+	free(new);
 }

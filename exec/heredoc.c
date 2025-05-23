@@ -6,7 +6,7 @@
 /*   By: aguilleu <aguilleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:39:46 by acolonne          #+#    #+#             */
-/*   Updated: 2025/05/23 13:50:19 by aguilleu         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:40:00 by aguilleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	expand_text(t_minishell *minishell, char **text)
 	i = 0;
 	while (*text && (*text)[i])
 	{
+		check_heredoc_expand(*text, &i);
 		if ((*text)[i] == '\'')
 			expand_sq(&i, text);
 		else if ((*text)[i] == '"')

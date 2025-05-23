@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acolonne <acolonne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aguilleu <aguilleu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:43:21 by acolonne          #+#    #+#             */
-/*   Updated: 2025/05/23 18:14:09 by acolonne         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:24:14 by aguilleu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	init_minishell(t_minishell *minishell, char **env)
 	minishell->cmd = 0;
 	minishell->env = dup_env(env);
 	minishell->path = get_path(minishell->env);
+	shlvl_increment(minishell);
 	minishell->exit_code = 0;
 }
 

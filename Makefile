@@ -19,7 +19,8 @@ SRCS = ./builtins/ft_cd.c exec/exec_utils.c ./sources/utils_str.c \
 	./exec/check_init.c ./sources/utils.c ./tokenization/token_init.c \
 	./exec/exec_builtins.c ./sources/utils_format.c ./tokenization/token_parsing.c \
 	./exec/exec_cmd.c ./sources/utils_malloc.c ./tokenization/token_utils.c \
-	./exec/exec_init.c ./sources/utils_str2.c ./tokenization/var_expand.c
+	./exec/exec_init.c ./sources/utils_str2.c ./tokenization/var_expand.c \
+	./exec/heredoc_expand.c ./tokenization/cmd_create_utils.c
 
 
 OBJDIR = ./obj
